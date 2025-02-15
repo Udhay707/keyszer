@@ -31,7 +31,7 @@ class Devices:
     @staticmethod
     def print_list():
         devices = Devices.all()
-        device_format = "{1.fn:<20} {1.name:<35} {1.phys}"
+        device_format = "{1.path:<20} {1.name:<35} {1.phys}"
         device_lines = [
             device_format.format(n, d) for n, d in enumerate(devices)
         ]
@@ -42,7 +42,7 @@ class Devices:
         for i, line in enumerate(device_lines):
             dev = devices[i]
             if len(dev.name) > 35:
-                fmt = "{1.fn:<20} {1.name:<35}"
+                fmt = "{1.path:<20} {1.name:<35}"
                 print(fmt.format(None, dev))
                 print(" " * 57 + dev.phys)
             else:
@@ -81,7 +81,7 @@ class DeviceRegistry:
             self.grab(device)
 
     def grab(self, device):
-        info(f"Grabbing {device.name} ({device.fn})", ctx="+K")
+        info(f"Grabbing {device.name} ({device.path})", ctx="+K")
         self._loop.add_reader(device, self._input_cb, device)
         self._devices.append(device)
         try:
@@ -131,7 +131,7 @@ class DeviceFilter:
         # picks up keyboard-ish devices.
         if self.matches:
             for match in self.matches:
-                if device.fn == match or device.name == match:
+                if device.path == match or device.name == match:
                     return True
             return False
 
